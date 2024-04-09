@@ -1,0 +1,67 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    color: #F7F9F9;
+  }
+  
+  header {
+    background-color: #3498DB;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    width: 100%;
+    position: relative;
+  }
+  
+  #content {
+    padding: 20px;
+  }
+  
+  footer {
+    background-color: #3498DB;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+    position: fixed; /* Fixed positioning */
+    bottom: 0; /* Align to the bottom */
+    width: 100%;
+    position: relative;
+}
+
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .zero-reviews {
+    background-color: #ffe6e6; /* Change this to your preferred color for zero reviews */
+    font-weight: bold;
+  }
+
+  button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/* Change the color of the button when hovered */
+button:hover {
+    background-color: #45a049;
+}

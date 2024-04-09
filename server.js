@@ -17,6 +17,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const hostname = process.env.HOST;
 const port = process.env.PORT;
 
+// Register a custom Handlebars helper
+const hbs = exphbs.create({
+    extname: '.hbs',
+  });
+  
+  // Register the Handlebars engine with Express
+  app.engine('hbs', hbs.engine);
+
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'handlebars');
+
+  
+  // Set the default view engine to Handlebars
+  app.set('view engine', 'hbs');
+
 // Middleware
 // Initialize built-in middleware for urlencoding and json
 app.use(express.urlencoded({ extended: true }));
@@ -49,6 +64,50 @@ myDB.once("open", function(){
 myDB.on("error", function(){
     console.log("Error connecting to database");
 })
+
+app.get("/", async (req, res) => {
+    const perPage = 5; // Number of items per page
+    let page = parseInt(req.query.page) || 1; // Current page, default to 1
+    let title = req.query.title; // Optional title parameter for filtering
+
+    try {
+        let query = {};
+
+        // If title is provided, add it to the query
+        if (title) {
+            query.title = title;
+        }
+
+        // Count total number of documents matching the query
+        const totalMovies = await Movie.countDocuments(query);
+
+        // Calculate total number of pages
+        const totalPages = Math.ceil(totalMovies / perPage);
+
+        // Ensure page number is within valid range
+        page = Math.min(Math.max(1, page), totalPages);
+
+        // Calculate skip value
+        const skip = (page - 1) * perPage;
+
+        // Find movies based on the query, sorted by Movie_id, and limited to perPage
+        const movieList = await Movie.find(query)
+            .sort({ Movie_id: 1 }) // Sorting by Movie_id in ascending order
+            .skip(skip)
+            .limit(perPage)
+            .lean() // Convert Mongoose documents to plain JavaScript objects
+            .exec();
+
+        res.render('partials/index', {
+            title: "Web API",
+            data: movieList,
+            page: page,
+            totalPages: totalPages
+        });
+    } catch (err) {
+        res.render('partials/error', { title: 'Error', message: err });
+    }
+});
 
 
 // Define route to fetch movies data

@@ -1,0 +1,43 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+<a href="#"><button type="button" style="float: right;" class="btn btn-secondary">Add Movie</button></a>
+
+<h1>All Movie Data</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Poster</th>
+            <th>Title</th>
+            <th>Full Plot</th>
+            <th>Runtime</th>
+            <th>Category</th>
+            <th>Released Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each data}}
+        <tr>
+            <td><img src="{{poster}}" style="height: 40px; width: 40px;" alt="Poster"></td>
+            <td>{{title}}</td>
+            <td>{{fullplot}}</td>
+            <td>{{runtime}}</td>
+            <td>{{type}}</td>
+            <td>{{year}}</td>
+            <td><a href="#"><button type="button" class="btn btn-primary">Edit</button></a></td>
+            <td><button type="button" class="btn btn-danger">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+
+</table>
+<div>
+    <p>Total Pages: {{totalPages}}</p>
+    {{#if prevPage}}
+    <a href="/?page={{prevPage}}"><button style="color: black;" type="button" class="btn btn-primary">Previous Page</button></a>
+    {{/if}}
+    {{#if nextPage}}
+    <a href="/?page={{nextPage}}"><button type="button" class="btn btn-primary">Next Page</button></a>
+    {{/if}}
+</div>

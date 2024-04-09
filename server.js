@@ -98,16 +98,23 @@ app.get("/", async (req, res) => {
             .lean() // Convert Mongoose documents to plain JavaScript objects
             .exec();
 
+        // Calculate nextPage and prevPage
+        const nextPage = page < totalPages ? page + 1 : null;
+        const prevPage = page > 1 ? page - 1 : null;
+
         res.render('partials/index', {
             title: "Web API",
             data: movieList,
             page: page,
-            totalPages: totalPages
+            totalPages: totalPages,
+            nextPage: nextPage,
+            prevPage: prevPage
         });
     } catch (err) {
         res.render('partials/error', { title: 'Error', message: err });
     }
 });
+
 
 
 // Define route to fetch movies data

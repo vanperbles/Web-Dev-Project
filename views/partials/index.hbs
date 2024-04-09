@@ -33,11 +33,11 @@
 
 </table>
 <div>
-    <p>Total Pages: {{totalPages}}</p>
+    <p>Page {{page}} of {{totalPages}}</p>
     {{#if prevPage}}
-    <a href="/?page={{prevPage}}"><button style="color: black;" type="button" class="btn btn-primary">Previous Page</button></a>
+    <a href="/?page={{prevPage}}"><button type="button" class="btn btn-primary">Previous</button></a>
     {{/if}}
     {{#if nextPage}}
-    <a href="/?page={{nextPage}}"><button type="button" class="btn btn-primary">Next Page</button></a>
+    <a href="/?page={{nextPage}}"><button type="button" class="btn btn-primary">Next</button></a>
     {{/if}}
 </div>

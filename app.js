@@ -42,7 +42,8 @@ app.use(express.static("public"));
 
 // connecting to flie
 var database = require('./config/conn')
-var Movie = require('./models/movie')
+var Movie = require('./models/movie');
+const { title } = require('process');
 
 // connection to the database 
 
@@ -116,7 +117,8 @@ app.get("/", async (req, res) => {
 });
 
 
-
+// Routes
+// POST /api/Movies
 // Define route to fetch movies data
 app.get('/api/movies', async (req, res) => {
     try {
@@ -131,24 +133,41 @@ app.get('/api/movies', async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   });
+  
 
-//   app.post('/api/movies/data', async (req, res) =>{
-//     try{
-//         console.log(req.body);
+// GET /api/Movies/:Id
+app.get('/api/movies/:id', async (req, res) => {
+    try {
+        const movie = await Movie.findById(req.params.id).lean().exec();
+        if (!movie) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+        res.render('partials/detail', {title:"Detail view ", data:movie});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-//         const church = await Movie.create({
-//             name: req.body.name
-//         })
+// API Create 
+app.post('/api/movies/data', async (req, res) =>{
+    try{
+        console.log(req.body);
 
-//         const churchs = await Movie.find();
+        const movie = await Movie.create({
+            plot: req.body.plot,
+            title: req.body.title,
+            runtime: req.body.runtime
+        })
 
-//         res.json(churchs)
+        const movies = await Movie.findById(movie._id).lean().exec();
 
-//     }catch(err){
-//         res.status(500).send(err.message);
+        res.json(movies)
 
-//     }
-//   });
+    }catch(err){
+        res.status(500).send(err.message);
+
+    }
+});
 
 
 

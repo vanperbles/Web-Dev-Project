@@ -1,5 +1,4 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+
 <a href="#"><button type="button" style="float: right;" class="btn btn-secondary">Add Movie</button></a>
 
 <h1>All Movie Data</h1>
@@ -20,7 +19,7 @@
         {{#each data}}
         <tr>
             <td><img src="{{poster}}" style="height: 40px; width: 40px;" alt="Poster"></td>
-            <td>{{title}}</td>
+            <td><a href="/api/movies/{{_id}}">{{title}}</a></td>
             <td>{{fullplot}}</td>
             <td>{{runtime}}</td>
             <td>{{type}}</td>

@@ -170,6 +170,20 @@ app.post('/api/movies/data', async (req, res) =>{
 });
 
 
+// PUT /api/Movies/:Id
+app.put('/api/movies/edit/:id', async (req, res) => {
+    try {
+        const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true }).lean().exec();
+        if (!updatedMovie) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+        res.json(updatedMovie);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 
   // Define a wildcard route to handle any other paths
 app.get('*', function(req, res) {

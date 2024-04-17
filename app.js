@@ -6,11 +6,16 @@ const path = require('path')
 const exphbs = require('express-handlebars');
 const dotenv = require('dotenv');
 dotenv.config(); // Load environment variables from .env file
+var methodOverride = require('method-override')
+const bcrypt = require('bcrypt');
+const jwt=require('jsonwebtoken')
 
 // pass the request we will be loading 
 var bodyParser = require('body-parser');
 // Middleware to parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(methodOverride('_method'));
 
 // connecting my hostname and port
 
@@ -43,7 +48,9 @@ app.use(express.static("public"));
 // connecting to flie
 var database = require('./config/conn')
 var Movie = require('./models/movie');
+var User = require('./models/user');
 const { title } = require('process');
+const authenticateToken = require('./middleware/authMiddleware')
 
 // connection to the database 
 
@@ -133,6 +140,15 @@ app.get('/api/movies', async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   });
+
+
+app.get('/api/movies/signup', async(req, res) =>{
+    res.render('partials/signup')
+});
+  
+app.get('/api/movies/login', async(req, res) =>{
+    res.render('partials/login')
+});
   
 
 // GET /api/Movies/:Id
@@ -170,18 +186,105 @@ app.post('/api/movies/data', async (req, res) =>{
 });
 
 
-// PUT /api/Movies/:Id
-app.put('/api/movies/edit/:id', async (req, res) => {
+// GEt /api/Movies/:Id
+app.get('/api/movies/edit/:id', authenticateToken, async (req, res) => {
     try {
-        const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true }).lean().exec();
+        const updatedMovie = await Movie.findOne({_id:req.params.id}, req.body, { new: true }).lean().exec();
         if (!updatedMovie) {
             return res.status(404).json({ error: 'Movie not found' });
         }
-        res.json(updatedMovie);
+        res.render('partials/edit', {title:"Edit View", data:updatedMovie});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
+// PUT //api/movies/edit/:id
+app.put('/api/movies/edit/:id', async (req, res) => {
+    try {
+        
+        await Movie.findByIdAndUpdate(req.params.id,{
+            plot: req.body.plot,
+            title: req.body.title,
+            runtime: req.body.runtime
+
+        });
+
+        res.redirect(`/api/movies/edit/${req.params.id}`);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// DELETE /api/Movies/:Id
+app.delete('/api/movies/delete/:id', async (req, res) => {
+    try {
+        const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
+        if (!deletedMovie) {
+            return res.status(404).json({ error: 'Movie not found' });
+        }
+        res.redirect('/');
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// SignUp
+app.post('/api/movies/signup', async (req, res) => {
+    try {
+      const { name, email, password, confirmPassword } = req.body;
+  
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        return res.status(400).json({ message: 'Passwords do not match' });
+      }
+
+      // Hash password
+      const hashedPassword = await bcrypt.hash(password, 10);      
+  
+      // Create new user
+      const newUser = new User({ name, email, password: hashedPassword });
+      await newUser.save();
+  
+      res.redirect('/api/movies/login');
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+  
+
+
+  app.post('/api/movies/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      // Find user by email
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Check password
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+  
+      // Generate JWT
+      const token = jwt.sign({ userId: user._id }, process.env.SECRETKEY, { expiresIn: '1h' });
+      
+  
+      res.redirect('/');
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
+
+
+  
 
 
 

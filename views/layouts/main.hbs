@@ -8,17 +8,46 @@
 
   <title>{{title}}</title>
 </head>
-<body>
-  <header>
-    <h1>Web Development Web API</h1>
-  </header>
+<body >
+
+ <nav class="navbar fixed-top navbar-expand-lg mynav">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Api Project</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <ul class="navbar-nav d-flex justify-content-center" style="width: 100%;">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">All Movies</a>
+                </li>
+            </ul>
+            <a href="/api/movies/login?_method=GET" class="btn btn-outline-success">Login</a>
+
+            <form class="d-flex" role="search">
+                <a href="/api/movies/signup?_method=GET" class="btn btn-outline-success">SignUp</a>
+
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+ 
   
-  <div id="content">
+  <div id="content" style="padding-top: 70px;">
     {{{body}}}
   </div>
 
   <footer>
     <p>https://github.com/vanperbles/Web-Dev-Project.git</p>
   </footer>
+
+   <script src="/stylesheet/main.js"></script>
+   <script src="/stylesheet/main.js"></script>
 </body>
+
 </html>

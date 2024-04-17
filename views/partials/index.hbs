@@ -24,8 +24,13 @@
             <td>{{runtime}}</td>
             <td>{{type}}</td>
             <td>{{year}}</td>
-            <td><a href="#"><button type="button" class="btn btn-primary">Edit</button></a></td>
-            <td><button type="button" class="btn btn-danger">Delete</button></td>
+            <td><a href="/api/movies/edit/{{_id}}"><button type="button" class="btn btn-primary">Edit</button></a></td>
+            <td>
+                <form id="deleteForm" action="/api/movies/delete/{{_id}}?_method=DELETE " method="POST">
+                    <button type="submit" onclick="return confirm('Do you want to delete this Movie?')" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+
         </tr>
         {{/each}}
     </tbody>

@@ -1,0 +1,18 @@
+<form action="/api/movies/edit/{{data._id}}?_method=PUT" method="POST">
+  <p>{{title}}</p>
+
+  <div class="mb-3">
+    <label for="disabledTextInput" class="form-label">Plot</label>
+    <input type="text" class="form-control"  value="{{data.plot}}" id="disabledTextInput" name="plot">
+  </div>
+    <div class="mb-3">
+    <label for="disabledTextInput" class="form-label">Plot</label>
+    <input type="text" class="form-control"  value="{{data.title}}" id="disabledTextInput" name="title">
+  </div>
+    <div class="mb-3">
+    <label for="disabledTextInput" class="form-label">Plot</label>
+    <input type="text" class="form-control"  value="{{data.runtime}}" id="disabledTextInput" name="runtime">
+  </div>
+
+    <button type="submit" class="btn btn-primary">Update Movie</button>
+</form>

@@ -1,0 +1,13 @@
+<div class="container">
+    <h2>Sign Up</h2>
+    <form action="/api/movies/signup?_method=POST" method="post">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="password" name="password" placeholder="Your Password" required>
+        <input type="password" name="confirmPassword" placeholder="Your Password" required>
+        <input type="submit" value="Sign Up">
+    </form>
+    <div class="form-footer">
+        <span>Already have an account? <a href="/api/movies/login?_method=GET">Sign In</a></span>
+    </div>
+</div>
